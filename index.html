@@ -68,11 +68,12 @@ body.locked .bt.edit-only{opacity:.4;pointer-events:none}
 </head>
 <body class="locked">
 <div class="tb">
-<h1>EMA1 Org Structure - Days Vs Shift Teams</h1>
+<h1>EMA1 Org Structure</h1>
 <div class="tr">
 <div class="tl2"><span class="hn">Click login = Phonetool | Enable editing to make changes</span></div>
 <div class="tbs">
 <button class="em-btn" id="emBtn" onclick="toggleEdit()">&#128274; Enable Editing</button>
+<button class="bt edit-only" onclick="saveLive()" style="border-color:#2563eb;color:#2563eb">🚀 Save Live</button>
 <button class="bt edit-only" onclick="exportHTML()" style="border-color:#16a34a;color:#16a34a">&#128229; Export HTML</button>
 <button class="bt edit-only" onclick="if(confirm('Reset to default? All changes will be lost.'))location.reload()" style="border-color:#dc2626;color:#dc2626">&#128260; Reset to Default</button>
 </div></div>
@@ -133,6 +134,14 @@ body.locked .bt.edit-only{opacity:.4;pointer-events:none}
 var ADMIN_USER="Admin";
 var ADMIN_PASS="4dmin123";
 var editMode=false;
+
+
+/* === GITHUB CONFIG === */
+var GH_TOKEN="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";
+var GH_REPO="jramz123/EMA1-Shift-Org";
+var GH_FILE="index.html";
+var GH_API="https://api.github.com/repos/"+GH_REPO+"/contents/"+GH_FILE;
+
 function toggleEdit(){
   var btn=document.getElementById("emBtn");
   if(!editMode){
@@ -178,6 +187,146 @@ document.addEventListener("click",function(e){
   if(left+160>window.innerWidth+window.scrollX)left=rect.left+window.scrollX-166;
   cp.style.left=left+"px";cp.style.top=top+"px";cp.classList.add("open")
 });
+
+document.addEventListener("contextmenu",function(e){
+  if(!editMode)return;
+  var lg=e.target.closest(".lg");if(!lg)return;
+  e.preventDefault();
+  var cur=lg.dataset.u||"";
+  var nl=prompt("Enter login:",cur);
+  if(nl!==null&&nl.trim()!==""){nl=nl.trim().toLowerCase();lg.dataset.u=nl;lg.textContent=nl.toUpperCase();showT("Login updated")}
+});
+
+function addPerson(btn){
+  if(!editMode){showT("Enable editing first","ser");return}
+  var ch=btn.parentElement;
+  var name=prompt("Enter name:");
+  if(!name||!name.trim())return;
+  var login=prompt("Enter login alias (e.g. jamirigg):","");
+  var lu=(login&&login.trim())?login.trim().toUpperCase():"LOGIN";
+  var ll=(login&&login.trim())?login.trim().toLowerCase():"";
+  var n=document.createElement("div");n.className="n";
+  var b=document.createElement("div");b.className="b gn";b.draggable=true;
+  var s=document.createElement("span");s.className="nm";s.contentEditable="true";s.spellcheck=false;s.textContent=name.trim();
+  var lg=document.createElement("span");lg.className="lg";lg.dataset.u=ll;lg.textContent=lu;
+  var r=document.createElement("span");r.className="rl";r.contentEditable="true";r.spellcheck=false;r.textContent="Click to set";
+  b.appendChild(s);b.appendChild(lg);b.appendChild(r);n.appendChild(b);
+  var g=null;
+  for(var i=0;i<ch.children.length;i++){var nd=ch.children[i];if(nd.classList&&nd.classList.contains("n")){var bx=nd.querySelector(".b");if(bx&&bx.classList.contains("gy")){g=nd;break}}}
+  if(g){ch.insertBefore(n,g)}else{ch.insertBefore(n,btn)}
+  showT("Added "+name.trim());setTimeout(drawL,50)
+}
+
+function exportHTML(){
+  if(!editMode){showT("Enable editing first","ser");return}
+  var c=document.documentElement.cloneNode(true);
+  var sv=c.querySelector("#ln");if(sv)sv.innerHTML="";
+  var t=c.querySelector("#toast");if(t)t.className="toast";
+  var p=c.querySelector("#cp");if(p)p.classList.remove("open");
+  c.querySelector("body").classList.add("locked");
+  c.querySelector("body").classList.remove("locked");
+  var h="<!DOCTYPE html>\n<html>"+c.innerHTML+"<\/html>";
+  var bl=new Blob([h],{type:"text/html"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(bl);
+  a.download="EMA1_Org_Structure.html";a.click();
+  URL.revokeObjectURL(a.href);showT("Exported!","sok")
+}
+
+/* === SAVE LIVE TO GITHUB === */
+function saveLive(){
+  if(!editMode){showT("Enable editing first","ser");return}
+  if(!confirm("Push changes live? This will update the site for everyone."))return;
+  showT("Saving to GitHub...","");
+  var c=document.documentElement.cloneNode(true);
+  var sv=c.querySelector("#ln");if(sv)sv.innerHTML="";
+  var t=c.querySelector("#toast");if(t)t.className="toast";
+  var p=c.querySelector("#cp");if(p)p.classList.remove("open");
+  c.querySelector("body").className="locked";
+  var eb=c.querySelector("#emBtn");if(eb){eb.innerHTML="\u{1F512} Enable Editing";eb.classList.remove("active")}
+  var h="<!DOCTYPE html>\n<html>"+c.innerHTML+"<\/html>";
+  var content=btoa(unescape(encodeURIComponent(h)));
+  fetch(GH_API,{headers:{"Authorization":"token "+GH_TOKEN,"Accept":"application/vnd.github.v3+json"}})
+  .then(function(r){return r.json()})
+  .then(function(data){
+    var sha=data.sha;
+    return fetch(GH_API,{
+      method:"PUT",
+      headers:{"Authorization":"token "+GH_TOKEN,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},
+      body:JSON.stringify({message:"Org chart update - "+new Date().toLocaleString(),content:content,sha:sha})
+    })
+  })
+  .then(function(r){
+    if(r.ok){showT("Live site updated! Changes deploy in ~1 min","sok")}
+    else{r.json().then(function(d){showT("Error: "+(d.message||"Failed"),"ser")})}
+  })
+  .catch(function(err){showT("Error: "+err.message,"ser")})
+}
+
+var cpT=null;
+var allC=["r","g","pk","db","cy","sb","gn","rf","ro","rp","yw","pp","tl","gy"];
+var opts=document.querySelectorAll(".co");
+for(var i=0;i<opts.length;i++){opts[i].addEventListener("click",function(e){
+  e.stopPropagation();if(!cpT)return;
+  var nc=this.getAttribute("data-c");
+  for(var j=0;j<allC.length;j++){cpT.classList.remove(allC[j])}
+  cpT.classList.add(nc);
+  showT((cpT.querySelector(".nm")?cpT.querySelector(".nm").textContent:"Box")+" colour changed");
+  document.getElementById("cp").classList.remove("open");cpT=null
+})}
+
+function drawL(){
+  var svg=document.getElementById("ln");
+  svg.setAttribute("width",document.body.scrollWidth);
+  svg.setAttribute("height",document.body.scrollHeight);
+  svg.innerHTML="";
+  var brs=document.querySelectorAll(".br");
+  for(var i=0;i<brs.length;i++){
+    var br=brs[i];var pb=br.querySelector(":scope > .n > .b");if(!pb)continue;
+    var ch=br.querySelector(":scope > .ch");
+    if(ch){var kids=ch.querySelectorAll(":scope > .n > .b");var prev=pb;for(var k=0;k<kids.length;k++){addL(svg,prev,kids[k]);prev=kids[k]}}
+    var sr=br.querySelector(":scope > .sr");
+    if(sr){var sbs=sr.querySelectorAll(":scope > .br");for(var s=0;s<sbs.length;s++){var fb=sbs[s].querySelector(".n > .b");if(fb)addL(svg,pb,fb);var sc=sbs[s].querySelector(":scope > .ch");if(sc){var sk=sc.querySelectorAll(":scope > .n > .b");var sp=fb||pb;for(var x=0;x<sk.length;x++){addL(svg,sp,sk[x]);sp=sk[x]}}}}
+  }
+  var eb=document.querySelector(".ne .b");
+  if(eb){var mgrs=document.querySelectorAll(".mr > .br > .n:first-child > .b");for(var m=0;m<mgrs.length;m++)addL(svg,eb,mgrs[m]);var pc=document.querySelector(".pb > .ch");if(pc){var pf=pc.querySelector(":scope > .n:first-child > .b");if(pf)addL(svg,eb,pf)}}
+}
+function addL(svg,from,to){
+  var fR=from.getBoundingClientRect(),tR=to.getBoundingClientRect(),sX=window.scrollX,sY=window.scrollY;
+  var x1=fR.left+fR.width/2+sX,y1=fR.bottom+sY,x2=tR.left+tR.width/2+sX,y2=tR.top+sY;
+  var midY=(y1+y2)/2;
+  var p=document.createElementNS("http://www.w3.org/2000/svg","path");
+  p.setAttribute("d","M "+x1+" "+y1+" L "+x1+" "+midY+" L "+x2+" "+midY+" L "+x2+" "+y2);
+  p.setAttribute("fill","none");p.setAttribute("stroke","#aaa");p.setAttribute("stroke-width","1.5");
+  svg.appendChild(p)
+}
+
+var dg=null;
+document.addEventListener("dragstart",function(e){if(!editMode){e.preventDefault();return false}var b=e.target.closest(".b");if(!b||b.classList.contains("gy"))return;dg=b;dg.classList.add("dg");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain","")});
+document.addEventListener("dragend",function(){if(dg)dg.classList.remove("dg");var chs=document.querySelectorAll(".ch");for(var i=0;i<chs.length;i++)chs[i].classList.remove("do");dg=null;setTimeout(drawL,50)});
+document.addEventListener("dragover",function(e){if(!editMode)return;var ch=e.target.closest(".ch");if(!ch)return;e.preventDefault();ch.classList.add("do")});
+document.addEventListener("dragleave",function(e){var ch=e.target.closest(".ch");if(ch&&!ch.contains(e.relatedTarget))ch.classList.remove("do")});
+document.addEventListener("drop",function(e){
+  if(!editMode)return;
+  e.preventDefault();var ch=e.target.closest(".ch");if(!ch)return;ch.classList.remove("do");if(!dg)return;
+  var pn=dg.closest(".n");if(!pn)return;
+  var g=null;for(var i=0;i<ch.children.length;i++){var nd=ch.children[i];if(nd.classList&&nd.classList.contains("n")){var bx=nd.querySelector(".b");if(bx&&bx.classList.contains("gy")){g=nd;break}}}
+  var ab=ch.querySelector(".ab");
+  if(g){ch.insertBefore(pn,g)}else if(ab){ch.insertBefore(pn,ab)}else{ch.appendChild(pn)}
+  showT((dg.querySelector(".nm")?dg.querySelector(".nm").textContent:"Person")+" moved");setTimeout(drawL,50)
+});
+
+document.addEventListener("focusin",function(e){
+  if(!editMode)return;
+  if(e.target.classList.contains("rl")||e.target.classList.contains("nm")){var s=window.getSelection();var r=document.createRange();r.selectNodeContents(e.target);s.removeAllRanges();s.addRange(r)}
+});
+
+window.addEventListener("load",function(){setTimeout(drawL,150)});
+window.addEventListener("resize",drawL);
+</script>
+</body>
+</html>
+
+
 
 document.addEventListener("contextmenu",function(e){
   if(!editMode)return;
