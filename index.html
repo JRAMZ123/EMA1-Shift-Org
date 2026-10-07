@@ -182,7 +182,7 @@ function toggleEdit(){
     if(user===ADMIN_USER&&pw===ADMIN_PASS){
       editMode=true;
       document.body.classList.remove("locked");
-      btn.innerHTML="\U0001F513 Editing Enabled";
+      btn.innerHTML="\u{1F513} Editing Enabled";
       btn.classList.add("active");
       document.getElementById("dbZone").classList.add("active");
       showT("Edit mode enabled","sok");
@@ -190,7 +190,7 @@ function toggleEdit(){
   }else{
     editMode=false;
     document.body.classList.add("locked");
-    btn.innerHTML="\U0001F512 Enable Editing";
+    btn.innerHTML="\u{1F512} Enable Editing";
     btn.classList.remove("active");
     document.getElementById("dbZone").classList.remove("active");
     var cp=document.getElementById("cp");if(cp)cp.classList.remove("open");
@@ -227,7 +227,7 @@ document.addEventListener("contextmenu",function(e){
   e.preventDefault();
   var cur=lg.dataset.u||"";
   var nl=prompt("Enter login:",cur);
-  if(nl!==null&&nl.trim()!==""){nl=nl.trim().toLowerCase();lg.dataset.u=nl;lg.textContent=nl.toUpperCase();showT("Login updated")}
+  if(nl!==null&&nl.trim()!==""){nl=nl.trim().toLowerCase();lg.dataset.u=nl;lg.textContent=nl.toUpperCase();showT("Login updated");saveToStorage()}
 });
 
 function addPerson(btn){
