@@ -11,7 +11,7 @@ body{font-family:Arial,sans-serif;background:#fff;color:#222;padding:8px;overflo
 .tb{position:sticky;top:0;background:#fff;z-index:100;padding:8px 0 6px;border-bottom:1px solid #e2e8f0;margin-bottom:10px}
 h1{text-align:center;font-size:14px;font-weight:700;color:#333;margin-bottom:4px}
 .tr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
-.tl2{flex:1}.hn{font-size:9px;color:#999}.tbs{display:flex;gap:6px}
+.tl2{flex:1}.hn{font-size:9px;color:#999}.tbs{display:flex;gap:6px;flex-wrap:wrap}
 .bt{padding:5px 12px;font-size:10px;font-weight:600;border:1px solid #d1d5db;border-radius:5px;cursor:pointer;background:#fff}
 .ct{display:flex;flex-direction:column;align-items:center;min-width:1700px;position:relative;z-index:1}
 .ne{margin-bottom:6px}
@@ -69,6 +69,19 @@ body.locked .bt.edit-only{opacity:.4;pointer-events:none}
 body.locked .dz{display:none}body:not(.locked) .dz{display:flex}
 .dz.dho{background:#fecaca;border-color:#991b1b;transform:scale(1.1);box-shadow:0 4px 12px rgba(220,38,38,.4)}
 .dz-label{padding:6px}
+/* === MODAL STYLES === */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:3000}
+.modal.open{display:flex}
+.modal-content{background:#fff;border-radius:8px;padding:20px;max-width:500px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal-title{font-size:14px;font-weight:700;color:#333;margin-bottom:10px}
+.modal-text{font-size:12px;color:#666;margin-bottom:15px;line-height:1.5}
+.modal-buttons{display:flex;gap:10px;justify-content:flex-end}
+.modal-btn{padding:6px 12px;font-size:10px;font-weight:600;border:1px solid #ddd;border-radius:4px;cursor:pointer;background:#fff}
+.modal-btn.primary{border-color:#2563eb;background:#2563eb;color:#fff}
+.modal-btn:hover{opacity:.8}
+.file-input-wrapper{position:relative;overflow:hidden;display:inline-block}
+.file-input-wrapper input[type=file]{position:absolute;left:-9999px}
+#fileInput{display:none}
 </style>
 </head>
 <body class="locked">
@@ -78,10 +91,10 @@ body.locked .dz{display:none}body:not(.locked) .dz{display:flex}
 <div class="tl2"><span class="hn">Click login = Phonetool | Enable editing to make changes</span></div>
 <div class="tbs">
 <button class="em-btn" id="emBtn" onclick="toggleEdit()">🔒 Enable Editing</button>
-<button class="bt edit-only" onclick="saveLive()" style="border-color:#2563eb;color:#2563eb">🚀 Save Live</button>
-<button class="bt edit-only" onclick="saveToGitHub()" style="border-color:#059669;color:#059669">💾 Save to GitHub</button>
+<button class="bt edit-only" onclick="saveLive()" style="border-color:#2563eb;color:#2563eb">💾 Save Locally</button>
+<button class="bt edit-only" onclick="uploadFile()" style="border-color:#059669;color:#059669">📤 Upload HTML</button>
 <button class="bt edit-only" onclick="exportHTML()" style="border-color:#16a34a;color:#16a34a">📋 Export HTML</button>
-<button class="bt edit-only" onclick="if(confirm('Reset to default? All changes will be lost.'))location.reload()" style="border-color:#dc2626;color:#dc2626">🔄 Reset to Default</button>
+<button class="bt edit-only" onclick="if(confirm('Reset to default? All changes will be lost.'))location.reload()" style="border-color:#dc2626;color:#dc2626">🔄 Reset</button>
 </div></div>
 </div>
 <div class="cp" id="cp">
@@ -135,13 +148,26 @@ body.locked .dz{display:none}body:not(.locked) .dz{display:flex}
 <div class="dz" id="dz"><div class="dz-label">🗑️ DELETE<br>Drop Here</div></div>
 <div class="toast" id="toast"></div>
 
+<!-- Modal for upload confirmation -->
+<div class="modal" id="uploadModal">
+  <div class="modal-content">
+    <div class="modal-title">Upload HTML File</div>
+    <div class="modal-text">
+      <p>Select an HTML file to upload as the new org structure. This will become the default page.</p>
+      <input type="file" id="fileInput" accept=".html" />
+    </div>
+    <div class="modal-buttons">
+      <button class="modal-btn" onclick="closeUploadModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="processUpload()">Upload & Save</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* === PASSWORD PROTECTION === */
 var ADMIN_USER="Admin";
 var ADMIN_PASS="4dmin123";
 var editMode=false;
-var GITHUB_TOKEN=""; // User will set this
 
 function toggleEdit(){
   var btn=document.getElementById("emBtn");
@@ -225,6 +251,7 @@ function exportHTML(){
   var sv=c.querySelector("#ln");if(sv)sv.innerHTML="";
   var t=c.querySelector("#toast");if(t)t.className="toast";
   var p=c.querySelector("#cp");if(p)p.classList.remove("open");
+  var modal=c.querySelector("#uploadModal");if(modal)modal.remove();
   c.querySelector("body").classList.add("locked");
   c.querySelector("body").classList.remove("locked");
   var h="<!DOCTYPE html>\n<html>"+c.innerHTML+"<\/html>";
@@ -236,45 +263,65 @@ function exportHTML(){
 
 function saveLive(){
   if(!editMode){showT("Enable editing first","ser");return}
-  localStorage.setItem("ema1_org_data",document.documentElement.innerHTML);
-  showT("Saved to browser storage","sok")
-}
-
-function saveToGitHub(){
-  if(!editMode){showT("Enable editing first","ser");return}
-  var token=prompt("Enter your GitHub Personal Access Token (or leave blank to use browser storage):");
-  if(!token||token.trim()===""){saveLive();return}
-  
   var c=document.documentElement.cloneNode(true);
   var sv=c.querySelector("#ln");if(sv)sv.innerHTML="";
   var t=c.querySelector("#toast");if(t)t.className="toast";
   var p=c.querySelector("#cp");if(p)p.classList.remove("open");
-  var dz=c.querySelector("#dz");if(dz)dz.remove();
+  var modal=c.querySelector("#uploadModal");if(modal)modal.remove();
   c.querySelector("body").classList.add("locked");
   var h="<!DOCTYPE html>\n<html>"+c.innerHTML+"<\/html>";
-  
-  var xhr=new XMLHttpRequest();
-  xhr.open("PUT","https://api.github.com/repos/JRAMZ123/EMA1-Shift-Org/contents/index.html",true);
-  xhr.setRequestHeader("Authorization","token "+token);
-  xhr.setRequestHeader("Content-Type","application/json");
-  xhr.onload=function(){
-    if(xhr.status===200||xhr.status===201){
-      showT("Saved to GitHub!","sok")
-    }else{
-      try{var err=JSON.parse(xhr.responseText);showT("GitHub error: "+(err.message||xhr.statusText),"ser")}catch(e){showT("GitHub error: "+xhr.statusText,"ser")}
+  localStorage.setItem("ema1_org_data",h);
+  showT("Saved to browser","sok")
+}
+
+function uploadFile(){
+  if(!editMode){showT("Enable editing first","ser");return}
+  document.getElementById("uploadModal").classList.add("open");
+  document.getElementById("fileInput").click()
+}
+
+function closeUploadModal(){
+  document.getElementById("uploadModal").classList.remove("open");
+  document.getElementById("fileInput").value=""
+}
+
+function processUpload(){
+  var fileInput=document.getElementById("fileInput");
+  if(!fileInput.files||!fileInput.files[0]){showT("Please select a file","ser");return}
+  var file=fileInput.files[0];
+  if(!file.name.endsWith(".html")){showT("Please select an HTML file","ser");return}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var html=e.target.result;
+      localStorage.setItem("ema1_org_data",html);
+      closeUploadModal();
+      showT("File uploaded! Refresh to apply.","sok");
+      setTimeout(function(){location.reload()},2000)
+    }catch(err){
+      showT("Error uploading file: "+err.message,"ser")
     }
   };
-  xhr.onerror=function(){showT("Failed to save to GitHub","ser")};
-  var payload={message:"Update org structure from web editor",content:btoa(h),branch:"main"};
-  var blob=new Blob([h],{type:"text/html"});
-  var reader=new FileReader();
-  reader.onload=function(){
-    var b64=reader.result.split(",")[1];
-    var p={message:"Update org structure from web editor",content:b64,branch:"main"};
-    xhr.send(JSON.stringify(p))
-  };
-  reader.readAsDataURL(blob)
+  reader.readAsText(file)
 }
+
+window.addEventListener("load",function(){
+  var saved=localStorage.getItem("ema1_org_data");
+  if(saved){
+    try{
+      var parser=new DOMParser();
+      var doc=parser.parseFromString(saved,"text/html");
+      var savedChart=doc.querySelector(".ct");
+      var currentChart=document.querySelector(".ct");
+      if(savedChart&&currentChart){
+        currentChart.innerHTML=savedChart.innerHTML;
+        setTimeout(drawL,150);
+        return
+      }
+    }catch(err){console.log("Could not restore saved data")}
+  }
+  setTimeout(drawL,150)
+});
 
 var cpT=null;
 var allC=["r","g","pk","db","cy","sb","gn","rf","ro","rp","yw","pp","tl","gy"];
@@ -356,7 +403,6 @@ document.addEventListener("focusin",function(e){
   if(e.target.classList.contains("rl")||e.target.classList.contains("nm")){var s=window.getSelection();var r=document.createRange();r.selectNodeContents(e.target);s.removeAllRanges();s.addRange(r)}
 });
 
-window.addEventListener("load",function(){setTimeout(drawL,150)});
 window.addEventListener("resize",drawL);
 </script>
 </body>
