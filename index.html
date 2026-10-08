@@ -20,7 +20,7 @@ h1{text-align:center;font-size:14px;font-weight:700;color:#333;margin-bottom:4px
 .sr{display:flex;gap:6px;align-items:flex-start;margin-top:4px}
 .ch{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:4px}.ch .n{margin-top:4px}
 .n{display:flex;flex-direction:column;align-items:center;position:relative}
-.b{border-radius:5px;padding:4px 6px;text-align:center;font-size:10px;font-weight:600;min-width:88px;max-width:125px;background:#f5ebe0;cursor:grab;user-select:none;transition:all .15s;border:3px solid}
+.b{border-radius:5px;padding:4px 6px;text-align:center;font-size:10px;font-weight:600;min-width:88px;max-width:125px;background:#f5ebe0;cursor:grab;user-select:none;transition:all .15s;border:3px solid #aaa;line-height:1.2}
 .b:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.12)}.b.dg{opacity:.25;transform:scale(.92)}
 .nm{display:block;font-size:10px;font-weight:600;border:1px dashed transparent;border-radius:2px;padding:0 1px;cursor:text}
 .nm:hover{border-color:rgba(0,0,0,.15);background:rgba(255,255,255,.3)}
@@ -55,7 +55,7 @@ h1{text-align:center;font-size:14px;font-weight:700;color:#333;margin-bottom:4px
 .cpo{display:flex;flex-direction:column;gap:3px}
 .co{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:10px;color:#333}.co:hover{background:#f1f5f9}
 .cs{display:inline-block;width:16px;height:16px;border-radius:3px;border:3px solid #aaa;flex-shrink:0}
-.toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(60px);background:#1e40af;color:#fff;padding:6px 14px;border-radius:5px;font-size:10px;font-weight:500;z-index:1000;transition:transform .2s,opacity .2s;opacity:0}
+.toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(60px);background:#1e40af;color:#fff;padding:6px 14px;border-radius:5px;font-size:10px;font-weight:500;z-index:1000;pointer-events:none;opacity:0;transition:all .3s;box-shadow:0 4px 12px rgba(0,0,0,.2);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}.sok{background:#16a34a}.ser{background:#dc2626}
 body.locked .nm,body.locked .rl{pointer-events:none;cursor:default}
 body.locked .nm:hover,body.locked .rl:hover{border-color:transparent;background:none}
@@ -64,10 +64,6 @@ body.locked .ab{display:none}body.locked .lg{pointer-events:auto;cursor:pointer}
 body.locked .bt.edit-only{opacity:.4;pointer-events:none}
 .em-btn{padding:5px 12px;font-size:10px;font-weight:600;border:1px solid #f59e0b;border-radius:5px;cursor:pointer;background:#fffbeb;color:#b45309}
 .em-btn:hover{background:#fef3c7}.em-btn.active{border-color:#16a34a;background:#f0fdf4;color:#15803d}
-/* === RECYCLE BIN STYLES === */
-.db-zone{position:fixed;right:20px;bottom:20px;width:60px;height:60px;background:#dc2626;border:3px dashed #991b1b;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;z-index:500;box-shadow:0 4px 12px rgba(220,38,38,.3);transition:all .2s;opacity:0;pointer-events:none}
-.db-zone.active{opacity:1;pointer-events:auto}
-.db-zone.over{background:#b91c1c;box-shadow:0 6px 20px rgba(220,38,38,.5);transform:scale(1.1)}
 </style>
 </head>
 <body class="locked">
@@ -76,10 +72,10 @@ body.locked .bt.edit-only{opacity:.4;pointer-events:none}
 <div class="tr">
 <div class="tl2"><span class="hn">Click login = Phonetool | Enable editing to make changes</span></div>
 <div class="tbs">
-<button class="em-btn" id="emBtn" onclick="toggleEdit()">🔒 Enable Editing</button>
+<button class="em-btn" id="emBtn" onclick="toggleEdit()">&#128274; Enable Editing</button>
 <button class="bt edit-only" onclick="saveLive()" style="border-color:#2563eb;color:#2563eb">🚀 Save Live</button>
-<button class="bt edit-only" onclick="exportHTML()" style="border-color:#16a34a;color:#16a34a">📋 Export HTML</button>
-<button class="bt edit-only" onclick="if(confirm('Reset to default? All changes will be lost.'))location.reload()" style="border-color:#dc2626;color:#dc2626">🔄 Reset to Default</button>
+<button class="bt edit-only" onclick="exportHTML()" style="border-color:#16a34a;color:#16a34a">&#128229; Export HTML</button>
+<button class="bt edit-only" onclick="if(confirm('Reset to default? All changes will be lost.'))location.reload()" style="border-color:#dc2626;color:#dc2626">&#128260; Reset to Default</button>
 </div></div>
 </div>
 <div class="cp" id="cp">
@@ -101,35 +97,33 @@ body.locked .bt.edit-only{opacity:.4;pointer-events:none}
 <div class="co" data-c="gy"><span class="cs" style="border-color:#94a3b8;background:#e2e8f0"></span>Label</div>
 </div></div>
 
-<!-- RECYCLE BIN DELETE ZONE -->
-<div class="db-zone" id="dbZone" title="Drag items here to delete">🗑️</div>
 
 <!-- === ORG CHART === -->
 <div class="ct" id="ct">
-<div class="n ne"><div class="b r"><span class="nm" contenteditable="true" spellcheck="false">Emma Swinscoe</span><span class="lg" data-u="emmaswin">EMMASWIN</span><span class="rl" contenteditable="true" spellcheck="false">Site Lead</span></div>
+<div class="n ne"><div class="b r"><span class="nm" contenteditable="true" spellcheck="false">Emma Swinscoe</span><span class="lg" data-u="emmaswin">EMMASWIN</span><span class="rl" contenteditable="true" spellcheck="false">RMEM</span></div></div>
 <div class="mr">
 <!-- Faisal Days -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">Days Manager</span></div><div class="ch"><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ravi Mistry</span><span class="lg" data-u="ramistry">RAMISTRY</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="sr"><div class="br"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Sarah Westwood</span><span class="lg" data-u="swwestwo">SWWESTWO</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div></div><div class="br"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jessica Riggs</span><span class="lg" data-u="riggjes">RIGGJES</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="ch"><div class="n"><div class="b rf" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Raluca Joita</span><span class="lg" data-u="raljoita">RALJOITA</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b yw" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Waste Management</span><span class="rl" contenteditable="true" spellcheck="false">Vendor</span></div></div><div class="n"><div class="b yw" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">CBRE</span><span class="rl" contenteditable="true" spellcheck="false">Vendor</span></div></div><div class="n"><div class="b yw" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">ABM - Janitorial</span><span class="rl" contenteditable="true" spellcheck="false">Vendor</span></div></div><div class="n"><div class="b gy">Buildings, Estates, CRM &amp; Compliance</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div></div></div>
 <!-- Jamie -->
-<div class="br"><div class="n"><div class="b pk" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jamie Riggall</span><span class="lg" data-u="jamirigg">JAMIRIGG</span><span class="rl" contenteditable="true" spellcheck="false">GEM</span></div><div class="ch"><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b pk" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jamie Riggall</span><span class="lg" data-u="jamirigg">JAMIRIGG</span><span class="rl" contenteditable="true" spellcheck="false">GEM</span></div></div><div class="ch"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Andy Claypole</span><span class="lg" data-u="claypa">CLAYPA</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Simon Ward</span><span class="lg" data-u="warsimo">WARSIMO</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Kevin Richards</span><span class="lg" data-u="akrich">AKRICH</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gy">Projects</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 <!-- Gary Days -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">Days Manager</span></div><div class="ch"><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ryan Kent</span><span class="lg" data-u="rkent">RKENT</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="sr"><div class="br"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Vacancy</span><span class="rl" contenteditable="true" spellcheck="false">Click to set</span></div></div><div class="ch"><div class="n"><div class="b gy">Learning &amp; Development</div></div></div></div><div class="br"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Antony Viner</span><span class="lg" data-u="antonyv">ANTONYV</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="ch"><div class="n"><div class="b gy">Safety</div></div></div></div></div></div>
 <!-- Alan Days -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">Days Manager</span></div><div class="ch"><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Roy Poulton</span><span class="lg" data-u="rpoulton">RPOULTON</span><span class="rl" contenteditable="true" spellcheck="false">SRMET Blue</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="sr"><div class="br"><div class="ch"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Vacancy</span><span class="rl" contenteditable="true" spellcheck="false">Click to set</span></div></div><div class="n"><div class="b rf" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jodie Parker</span><span class="lg" data-u="parjodie">PARJODIE</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b rf" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Adam Kehoe</span><span class="lg" data-u="kehoeada">KEHOEADA</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b gy">Amazon Robotics</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div></div></div>
 <!-- Matt Days -->
-<div class="br"><div class="n"><div class="b db" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">Manager Navy</span></div><div class="ch"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">James Wilcock</span><span class="lg" data-u="jwilcock">JWILCOCK</span><span class="rl" contenteditable="true" spellcheck="false">SRMET Cyan</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b db" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="sr"><div class="br"><div class="ch"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Simon Hitchcock</span><span class="lg" data-u="hitsimon">HITSIMON</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Will Quickenden</span><span class="lg" data-u="quickewi">QUICKEWI</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">George Screaton</span><span class="lg" data-u="gsscreat">GSSCREAT</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Nik Middleton</span><span class="lg" data-u="midnikol">MIDNIKOL</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Kyle Richardson</span><span class="lg" data-u="richakyi">RICHAKYI</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gy">Reliability</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div><div class="br"><div class="ch"><div class="n"><div class="b cy" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt Beeby</span><span class="lg" data-u="beebmatn">BEEBMATN</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gy">Maintenance Execution</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div></div></div>
 <!-- Planning -->
-<div class="br pb"><div class="pt">Reports to Site Lead</div><div class="ps"></div><div class="ch"><div class="n"><div class="b rp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Janice Bradwell</span><span class="lg" data-u="jbradwell">JBRADWELL</span><span class="rl" contenteditable="true" spellcheck="false">Scheduler</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br pb"><div class="pt">Reports to Site Lead</div><div class="ps"></div><div class="ch"><div class="n"><div class="b rp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Evie Adams</span><span class="lg" data-u="adamsevi">ADAMSEVI</span><span class="rl" contenteditable="true" spellcheck="false">RMEP</span></div></div><div class="n"><div class="b rp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Nikolett Gawin</span><span class="lg" data-u="nggawin">NGGAWIN</span><span class="rl" contenteditable="true" spellcheck="false">RMEP</span></div></div><div class="n"><div class="b rf" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Natasha Pinheiro</span><span class="lg" data-u="npinhei">NPINHEI</span><span class="rl" contenteditable="true" spellcheck="false">RMEO (RMEP Proxy)</span></div></div><div class="n"><div class="b gy">Planning</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 <!-- Team 1 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">Team 1 Lead</span></div><div class="ch"><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="ch"><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Chris Chambers</span><span class="lg" data-u="jchambch">JCHAMBCH</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Neil Whelband</span><span class="lg" data-u="nwwhelb">NWWHELB</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Benjamin Drabble</span><span class="lg" data-u="drabbleb">DRABBLEB</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Harvey Gilbert</span><span class="lg" data-u="harvegi">HARVEGI</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Kellie Parsons</span><span class="lg" data-u="parkelli">PARKELLI</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Harry Goodman</span><span class="lg" data-u="hagoodma">HAGOODMA</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ryan Tait</span><span class="lg" data-u="taitryan">TAITRYAN</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Thomas Baker</span><span class="lg" data-u="batomker">BATOMKER</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b ro" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Lucas Rigon Pessin</span><span class="lg" data-u="pessl">PESSL</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b gy">Team 1</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 <!-- Team 2 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">Team 2 Lead</span></div><div class="ch"><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="ch"><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Karl Harrison</span><span class="lg" data-u="kharrika">KHARRIKA</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Sam Wilson</span><span class="lg" data-u="swilsxn">SWILSXN</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Carl Grocock</span><span class="lg" data-u="carlgroc">CARLGROC</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Aiden Marshall</span><span class="lg" data-u="marshhh">MARSHHH</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Adam Dowsett</span><span class="lg" data-u="adadowse">ADADOWSE</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ameer Hussain</span><span class="lg" data-u="huameer">HUAMEER</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alexandru Magnea</span><span class="lg" data-u="amagnea">AMAGNEA</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Russ Kendrick</span><span class="lg" data-u="kendokdk">KENDOKDK</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Karen Lamarque</span><span class="lg" data-u="karenlam">KARENLAM</span><span class="rl" contenteditable="true" spellcheck="false">Click to set</span></div></div><div class="n"><div class="b ro" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Vicky Gordon</span><span class="lg" data-u="gordvict">GORDVICT</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b gy">Team 2</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 <!-- Team 3 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">Team 3 Lead</span></div><div class="ch"><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="ch"><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Liam Gunby</span><span class="lg" data-u="gunbyl">GUNBYL</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">David Hegarty</span><span class="lg" data-u="dhegart">DHEGART</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Lorenzo Trivigno</span><span class="lg" data-u="ltrivign">LTRIVIGN</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Chris Evans</span><span class="lg" data-u="evanscs">EVANSCS</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ben Kennedy</span><span class="lg" data-u="kenbenja">KENBENJA</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Sinden</span><span class="lg" data-u="sinden">SINDEN</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jonathan Swindell</span><span class="lg" data-u="swindel">SWINDEL</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Qamar Saleem</span><span class="lg" data-u="salqamar">SALQAMAR</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b ro" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gabor Oze</span><span class="lg" data-u="gaboroze">GABOROZE</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b gy">Team 3</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 <!-- Team 4 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">Team 4 Lead</span></div><div class="ch"><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">RMEAM</span></div></div><div class="ch"><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ben Shepherd</span><span class="lg" data-u="shepheyb">SHEPHEYB</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b sb" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jon Hegarty</span><span class="lg" data-u="hegarj">HEGARJ</span><span class="rl" contenteditable="true" spellcheck="false">SRMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Imran Khan</span><span class="lg" data-u="imdkhan">IMDKHAN</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Joey Burge</span><span class="lg" data-u="gbujosep">GBUJOSEP</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jamie Lakin</span><span class="lg" data-u="jamielak">JAMIELAK</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Aiden Rossouw</span><span class="lg" data-u="aidencr">AIDENCR</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Anthony Davis</span><span class="lg" data-u="antfsinc">ANTFSINC</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b gn" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">James Ward</span><span class="lg" data-u="jawardn">JAWARDN</span><span class="rl" contenteditable="true" spellcheck="false">RMET</span></div></div><div class="n"><div class="b ro" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Ben Gallagher</span><span class="lg" data-u="galldben">GALLDBEN</span><span class="rl" contenteditable="true" spellcheck="false">RMEO</span></div></div><div class="n"><div class="b gy">Team 4</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 <!-- Automation -->
-<div class="br"><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Vacancy</span><span class="rl" contenteditable="true" spellcheck="false">Automation Role</span></div><div class="ch"><div class="ab" onclick="addPerson(this)">+ Add</div></div></div>
+<div class="br"><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Vacancy</span><span class="rl" contenteditable="true" spellcheck="false">Click to set</span></div></div><div class="ch"><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jessica Lucas</span><span class="lg" data-u="lucjessi">LUCJESSI</span><span class="rl" contenteditable="true" spellcheck="false">AE</span></div></div><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Dean Milburn</span><span class="lg" data-u="dmmilbur">DMMILBUR</span><span class="rl" contenteditable="true" spellcheck="false">AE</span></div></div><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Richard Staniforth</span><span class="lg" data-u="stanifri">STANIFRI</span><span class="rl" contenteditable="true" spellcheck="false">AE</span></div></div><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Eoin Gilbert</span><span class="lg" data-u="eoingilb">EOINGILB</span><span class="rl" contenteditable="true" spellcheck="false">AE</span></div></div><div class="n"><div class="b gy">Automation</div></div><button class="ab" onclick="addPerson(this)">+ Add</button></div></div>
 </div></div>
 <svg id="ln" style="position:absolute;top:0;left:0;pointer-events:none;z-index:0"></svg>
 <div class="toast" id="toast"></div>
@@ -141,36 +135,7 @@ var ADMIN_USER="Admin";
 var ADMIN_PASS="4dmin123";
 var editMode=false;
 
-// Local Storage Key
-var STORAGE_KEY = "EMA1_OrgChart_Data";
 
-// Load data from local storage on page load
-function loadFromStorage() {
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try {
-      var data = JSON.parse(saved);
-      var ct = document.getElementById("ct");
-      if (ct && data.html) {
-        ct.innerHTML = data.html;
-      }
-    } catch(e) {
-      console.error("Error loading from storage:", e);
-    }
-  }
-}
-
-// Save data to local storage
-function saveToStorage() {
-  var ct = document.getElementById("ct");
-  if (ct) {
-    var data = {
-      html: ct.innerHTML,
-      timestamp: new Date().toISOString()
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
-}
 
 function toggleEdit(){
   var btn=document.getElementById("emBtn");
@@ -184,7 +149,6 @@ function toggleEdit(){
       document.body.classList.remove("locked");
       btn.innerHTML="\u{1F513} Editing Enabled";
       btn.classList.add("active");
-      document.getElementById("dbZone").classList.add("active");
       showT("Edit mode enabled","sok");
     }else{showT("Incorrect username or password","ser")}
   }else{
@@ -192,12 +156,10 @@ function toggleEdit(){
     document.body.classList.add("locked");
     btn.innerHTML="\u{1F512} Enable Editing";
     btn.classList.remove("active");
-    document.getElementById("dbZone").classList.remove("active");
     var cp=document.getElementById("cp");if(cp)cp.classList.remove("open");
     showT("Edit mode locked");
   }
 }
-
 /* === EMA1 ORG CHART - INTERACTIVE FEATURES === */
 var PHONE_URL = "https://phonetool.amazon.com/users/";
 var te=document.getElementById("toast");
@@ -227,7 +189,7 @@ document.addEventListener("contextmenu",function(e){
   e.preventDefault();
   var cur=lg.dataset.u||"";
   var nl=prompt("Enter login:",cur);
-  if(nl!==null&&nl.trim()!==""){nl=nl.trim().toLowerCase();lg.dataset.u=nl;lg.textContent=nl.toUpperCase();showT("Login updated");saveToStorage()}
+  if(nl!==null&&nl.trim()!==""){nl=nl.trim().toLowerCase();lg.dataset.u=nl;lg.textContent=nl.toUpperCase();showT("Login updated")}
 });
 
 function addPerson(btn){
@@ -247,13 +209,7 @@ function addPerson(btn){
   var g=null;
   for(var i=0;i<ch.children.length;i++){var nd=ch.children[i];if(nd.classList&&nd.classList.contains("n")){var bx=nd.querySelector(".b");if(bx&&bx.classList.contains("gy")){g=nd;break}}}
   if(g){ch.insertBefore(n,g)}else{ch.insertBefore(n,btn)}
-  showT("Added "+name.trim());setTimeout(drawL,50);saveToStorage();
-}
-
-function saveLive(){
-  if(!editMode){showT("Enable editing first","ser");return}
-  saveToStorage();
-  showT("Changes saved locally!","sok");
+  showT("Added "+name.trim());setTimeout(drawL,50)
 }
 
 function exportHTML(){
@@ -262,7 +218,6 @@ function exportHTML(){
   var sv=c.querySelector("#ln");if(sv)sv.innerHTML="";
   var t=c.querySelector("#toast");if(t)t.className="toast";
   var p=c.querySelector("#cp");if(p)p.classList.remove("open");
-  var db=c.querySelector("#dbZone");if(db)db.remove();
   c.querySelector("body").classList.add("locked");
   c.querySelector("body").classList.remove("locked");
   var h="<!DOCTYPE html>\n<html>"+c.innerHTML+"<\/html>";
@@ -281,8 +236,7 @@ for(var i=0;i<opts.length;i++){opts[i].addEventListener("click",function(e){
   for(var j=0;j<allC.length;j++){cpT.classList.remove(allC[j])}
   cpT.classList.add(nc);
   showT((cpT.querySelector(".nm")?cpT.querySelector(".nm").textContent:"Box")+" colour changed");
-  document.getElementById("cp").classList.remove("open");cpT=null;
-  saveToStorage();
+  document.getElementById("cp").classList.remove("open");cpT=null
 })}
 
 function drawL(){
@@ -296,10 +250,10 @@ function drawL(){
     var ch=br.querySelector(":scope > .ch");
     if(ch){var kids=ch.querySelectorAll(":scope > .n > .b");var prev=pb;for(var k=0;k<kids.length;k++){addL(svg,prev,kids[k]);prev=kids[k]}}
     var sr=br.querySelector(":scope > .sr");
-    if(sr){var sbs=sr.querySelectorAll(":scope > .br");for(var s=0;s<sbs.length;s++){var fb=sbs[s].querySelector(".n > .b");if(fb)addL(svg,pb,fb);var sc=sbs[s].querySelector(":scope > .ch");if(sc){var pf=sc.querySelectorAll(":scope > .n > .b");for(var z=0;z<pf.length;z++)addL(svg,fb,pf[z])}}}
+    if(sr){var sbs=sr.querySelectorAll(":scope > .br");for(var s=0;s<sbs.length;s++){var fb=sbs[s].querySelector(".n > .b");if(fb)addL(svg,pb,fb);var sc=sbs[s].querySelector(":scope > .ch");if(sc){var sk=sc.querySelectorAll(":scope > .n > .b");var sp=fb||pb;for(var x=0;x<sk.length;x++){addL(svg,sp,sk[x]);sp=sk[x]}}}}
   }
   var eb=document.querySelector(".ne .b");
-  if(eb){var mgrs=document.querySelectorAll(".mr > .br > .n:first-child > .b");for(var m=0;m<mgrs.length;m++)addL(svg,eb,mgrs[m]);var pc=document.querySelector(".pb > .ch");if(pc){var pf=pc.querySelectorAll(":scope > .n > .b");for(var p=0;p<pf.length;p++)addL(svg,eb,pf[p])}}
+  if(eb){var mgrs=document.querySelectorAll(".mr > .br > .n:first-child > .b");for(var m=0;m<mgrs.length;m++)addL(svg,eb,mgrs[m]);var pc=document.querySelector(".pb > .ch");if(pc){var pf=pc.querySelector(":scope > .n:first-child > .b");if(pf)addL(svg,eb,pf)}}
 }
 function addL(svg,from,to){
   var fR=from.getBoundingClientRect(),tR=to.getBoundingClientRect(),sX=window.scrollX,sY=window.scrollY;
@@ -312,32 +266,18 @@ function addL(svg,from,to){
 }
 
 var dg=null;
-document.addEventListener("dragstart",function(e){if(!editMode){e.preventDefault();return false}var b=e.target.closest(".b");if(!b||b.classList.contains("gy"))return;dg=b;dg.classList.add("dg");e.dataTransfer.effectAllowed="move"});
-document.addEventListener("dragend",function(){if(dg)dg.classList.remove("dg");var chs=document.querySelectorAll(".ch");for(var i=0;i<chs.length;i++)chs[i].classList.remove("do");var db=document.getElementById("dbZone");if(db)db.classList.remove("over");dg=null;setTimeout(drawL,50)});
-document.addEventListener("dragover",function(e){if(!editMode)return;var ch=e.target.closest(".ch");if(ch){e.preventDefault();ch.classList.add("do")}var db=document.getElementById("dbZone");if(db&&db.contains(e.target)){e.preventDefault();db.classList.add("over")}});
-document.addEventListener("dragleave",function(e){var ch=e.target.closest(".ch");if(ch&&!ch.contains(e.relatedTarget))ch.classList.remove("do");var db=document.getElementById("dbZone");if(db&&!db.contains(e.relatedTarget))db.classList.remove("over")});
+document.addEventListener("dragstart",function(e){if(!editMode){e.preventDefault();return false}var b=e.target.closest(".b");if(!b||b.classList.contains("gy"))return;dg=b;dg.classList.add("dg");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain","")});
+document.addEventListener("dragend",function(){if(dg)dg.classList.remove("dg");var chs=document.querySelectorAll(".ch");for(var i=0;i<chs.length;i++)chs[i].classList.remove("do");dg=null;setTimeout(drawL,50)});
+document.addEventListener("dragover",function(e){if(!editMode)return;var ch=e.target.closest(".ch");if(!ch)return;e.preventDefault();ch.classList.add("do")});
+document.addEventListener("dragleave",function(e){var ch=e.target.closest(".ch");if(ch&&!ch.contains(e.relatedTarget))ch.classList.remove("do")});
 document.addEventListener("drop",function(e){
   if(!editMode)return;
-  e.preventDefault();
-  var db=document.getElementById("dbZone");
-  if(db&&db.contains(e.target)){
-    if(!dg)return;
-    var name=(dg.querySelector(".nm")?dg.querySelector(".nm").textContent:"Person");
-    var pn=dg.closest(".n");
-    if(pn)pn.remove();
-    showT(name+" deleted");
-    saveToStorage();
-    setTimeout(drawL,50);
-    return;
-  }
-  var ch=e.target.closest(".ch");if(!ch)return;ch.classList.remove("do");if(!dg)return;
+  e.preventDefault();var ch=e.target.closest(".ch");if(!ch)return;ch.classList.remove("do");if(!dg)return;
   var pn=dg.closest(".n");if(!pn)return;
   var g=null;for(var i=0;i<ch.children.length;i++){var nd=ch.children[i];if(nd.classList&&nd.classList.contains("n")){var bx=nd.querySelector(".b");if(bx&&bx.classList.contains("gy")){g=nd;break}}}
   var ab=ch.querySelector(".ab");
   if(g){ch.insertBefore(pn,g)}else if(ab){ch.insertBefore(pn,ab)}else{ch.appendChild(pn)}
-  showT((dg.querySelector(".nm")?dg.querySelector(".nm").textContent:"Person")+" moved");
-  saveToStorage();
-  setTimeout(drawL,50)
+  showT((dg.querySelector(".nm")?dg.querySelector(".nm").textContent:"Person")+" moved");setTimeout(drawL,50)
 });
 
 document.addEventListener("focusin",function(e){
@@ -345,17 +285,9 @@ document.addEventListener("focusin",function(e){
   if(e.target.classList.contains("rl")||e.target.classList.contains("nm")){var s=window.getSelection();var r=document.createRange();r.selectNodeContents(e.target);s.removeAllRanges();s.addRange(r)}
 });
 
-document.addEventListener("input",function(e){
-  if(!editMode)return;
-  if(e.target.classList.contains("nm")||e.target.classList.contains("rl")){
-    clearTimeout(saveTimer);
-    saveTimer=setTimeout(saveToStorage,1500);
-  }
-});
-
-var saveTimer;
-window.addEventListener("load",function(){loadFromStorage();setTimeout(drawL,150)});
+window.addEventListener("load",function(){setTimeout(drawL,150)});
 window.addEventListener("resize",drawL);
 </script>
 </body>
 </html>
+
