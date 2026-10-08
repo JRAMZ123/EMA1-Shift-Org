@@ -79,8 +79,6 @@ body.locked .dz{display:none}body:not(.locked) .dz{display:flex}
 .modal-btn{padding:6px 12px;font-size:10px;font-weight:600;border:1px solid #ddd;border-radius:4px;cursor:pointer;background:#fff}
 .modal-btn.primary{border-color:#2563eb;background:#2563eb;color:#fff}
 .modal-btn:hover{opacity:.8}
-.file-input-wrapper{position:relative;overflow:hidden;display:inline-block}
-.file-input-wrapper input[type=file]{position:absolute;left:-9999px}
 #fileInput{display:none}
 </style>
 </head>
@@ -122,25 +120,23 @@ body.locked .dz{display:none}body:not(.locked) .dz{display:flex}
 <div class="n ne"><div class="b r"><span class="nm" contenteditable="true" spellcheck="false">Emma Swinscoe</span><span class="lg" data-u="emmaswin">EMMASWIN</span><span class="rl" contenteditable="true" spellcheck="false">Site Lead</span></div>
 <div class="mr">
 <!-- Faisal Days -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Days</span></div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Days</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
 <!-- Jamie -->
-<div class="br"><div class="n"><div class="b pk" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jamie Riggall</span><span class="lg" data-u="jamirigg">JAMIRIGG</span><span class="rl" contenteditable="true" spellcheck="false">GEM</span></div></div></div>
+<div class="br"><div class="n"><div class="b pk" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Jamie Riggall</span><span class="lg" data-u="jamirigg">JAMIRIGG</span><span class="rl" contenteditable="true" spellcheck="false">GEM</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
 <!-- Gary Days -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Days</span></div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Days</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
 <!-- Alan Days -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Days</span></div></div></div>
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Days</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
 <!-- Matt Days -->
-<div class="br"><div class="n"><div class="b db" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">Manager - Planning</span></div>
-<!-- Planning -->
-<div class="br pb"><div class="pt">Reports to Site Lead</div><div class="ps"></div><div class="ch"><div class="n"><div class="b rp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">TBD - Planning Department</span><span class="rl" contenteditable="true" spellcheck="false">Role TBD</span></div></div><div class="ab" onclick="addPerson(this)">+ Add Person</div></div></div></div></div>
-<!-- Team 1 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div></div></div>
-<!-- Team 2 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div></div></div>
-<!-- Team 3 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div></div></div>
-<!-- Team 4 -->
-<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div></div></div>
+<div class="br"><div class="n"><div class="b db" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">Manager - Planning</span></div><div class="ch"><div class="n"><div class="b rp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">TBD - Planning Department</span><span class="rl" contenteditable="true" spellcheck="false">Role TBD</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
+<!-- Team Nights Faisal -->
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Faisal Mahmood</span><span class="lg" data-u="fmahmod">FMAHMOD</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
+<!-- Team Nights Gary -->
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Gary Lythgoe</span><span class="lg" data-u="glythgoe">GLYTHGOE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
+<!-- Team Nights Alan -->
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Alan Hibbert</span><span class="lg" data-u="alahibbe">ALAHIBBE</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
+<!-- Team Nights Matt -->
+<div class="br"><div class="n"><div class="b g" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Matt McCombe</span><span class="lg" data-u="mmmccom">MMMCCOM</span><span class="rl" contenteditable="true" spellcheck="false">Shift Manager - Frac Nights</span></div><div class="ch"><div class="n"><div class="b" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Report 1</span><span class="lg" data-u="">LOGIN</span></div></div><div class="ab" onclick="addPerson(this)">+ Add</div></div></div></div>
 <!-- Automation -->
 <div class="br"><div class="n"><div class="b pp" draggable="true"><span class="nm" contenteditable="true" spellcheck="false">Vacancy</span><span class="rl" contenteditable="true" spellcheck="false">AE / Automation Engineer</span></div></div></div>
 </div></div>
@@ -253,7 +249,6 @@ function exportHTML(){
   var p=c.querySelector("#cp");if(p)p.classList.remove("open");
   var modal=c.querySelector("#uploadModal");if(modal)modal.remove();
   c.querySelector("body").classList.add("locked");
-  c.querySelector("body").classList.remove("locked");
   var h="<!DOCTYPE html>\n<html>"+c.innerHTML+"<\/html>";
   var bl=new Blob([h],{type:"text/html"});
   var a=document.createElement("a");a.href=URL.createObjectURL(bl);
